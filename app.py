@@ -118,12 +118,12 @@ def synthesize_speech(text: str, voice_name: str) -> Path:
     """
     mp3_path = Path(tempfile.mkstemp(suffix=".mp3")[1])
 
-    # Streaming do pliku — kompatybilne ze Streamlit Cloud
+    # Nowa wersja API OpenAI - używa response_format zamiast format
     with client.audio.speech.with_streaming_response.create(
         model="tts-1",
         voice=voice_name,
         input=text,
-        format="mp3",
+        response_format="mp3",  # 👈 zmienione z "format"
     ) as stream:
         stream.stream_to_file(str(mp3_path))
 
